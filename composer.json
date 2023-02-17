@@ -1,6 +1,6 @@
 {
-    "name": "yassinebenaid/helpers",
-    "description": "extra helpers to speed up the developement process",
+    "name": "yassinebenaid/eldia",
+    "description": "Eldia is a lightweight PHP package that provides developers with a set of extra helpers",
     "type": "library",
     "require": {
         "php": "^8.1"
