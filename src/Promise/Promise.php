@@ -5,7 +5,7 @@ namespace Eldia\Promise;
 
 use Exception;
 
-class Promise
+final class Promise
 {
     const PENDING = 'pending';
     const FULFILLED = 'fulfilled';
@@ -16,7 +16,7 @@ class Promise
     private $callbacks = [];
 
 
-    public function __construct(callable $executor)
+    private function __construct(callable $executor)
     {
         $resolve = function ($value) {
             $this->fulfill($value);
@@ -31,6 +31,10 @@ class Promise
         }
     }
 
+    public static function make(callable $executer)
+    {
+        return new self($executer);
+    }
 
     public function then(callable $onFulfilled = null, callable $onRejected = null)
     {
