@@ -1,0 +1,21 @@
+{
+    "name": "yassinebenaid/helpers",
+    "description": "extra helpers to speed up the developement process",
+    "type": "library",
+    "require": {
+        "php": "^8.1"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Eldia\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "yassinebenaid",
+            "email": "yassinebenaide3@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
