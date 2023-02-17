@@ -16,5 +16,10 @@
             "name": "yassinebenaid",
             "email": "yassinebenaide3@gmail.com"
         }
-    ]
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
+    }
 }
