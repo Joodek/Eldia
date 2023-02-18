@@ -2,113 +2,94 @@
 
 namespace Eldia\Promise;
 
-
-use Exception;
-
-final class Promise
+class Promise
 {
-    const PENDING = 'pending';
-    const FULFILLED = 'fulfilled';
-    const REJECTED = 'rejected';
+    use PromiseState,
+        PromiseCallbacks,
+        PromiseErrors;
 
-    private $state = self::PENDING;
-    private $result = null;
-    private $callbacks = [];
+    /** represent the recent promise's result */
+    protected mixed $result = null;
+
+
+    /** make new promise */
+    public static function make(callable $executor): static
+    {
+        return new self($executor);
+    }
 
 
     private function __construct(callable $executor)
     {
-        $resolve = function ($value) {
-            $this->fulfill($value);
-        };
-        $reject = function ($reason) {
-            $this->reject($reason);
-        };
-        try {
-            $executor($resolve, $reject);
-        } catch (Exception $e) {
-            $this->reject($e);
-        }
+        $this->initState();
+
+        $this->try(
+            $executor,
+            $this->fulfill(...),
+            $this->reject(...)
+        );
     }
 
-    public static function make(callable $executer)
-    {
-        return new self($executer);
-    }
 
-    public function then(callable $onFulfilled = null, callable $onRejected = null)
+    /** add fallbacks to promise */
+    public function then(callable $onSuccess, callable $onFailure = null)
     {
-        $promise = new self(function ($resolve, $reject) use ($onFulfilled, $onRejected) {
-            $callback = function () use ($resolve, $reject, $onFulfilled, $onRejected) {
-                try {
-                    if ($this->state == self::FULFILLED) {
-                        if (is_callable($onFulfilled)) {
-                            $result = $onFulfilled($this->result);
-                            if ($result instanceof self) {
-                                $result->then($resolve, $reject);
-                                return;
-                            }
-                            $resolve($result);
-                        } else {
-                            $resolve($this->result);
-                        }
-                    } else if ($this->state == self::REJECTED) {
-                        if (is_callable($onRejected)) {
-                            $result = $onRejected($this->result);
-                            if ($result instanceof self) {
-                                $result->then($resolve, $reject);
-                                return;
-                            }
-                            $resolve($result);
-                        } else {
-                            $reject($this->result);
-                        }
-                    }
-                } catch (Exception $e) {
-                    $reject($e);
-                }
-            };
-            if ($this->state == self::PENDING) {
-                $this->callbacks[] = $callback;
-            } else {
-                $callback();
+        if ($this->hasError()) return $this;
+
+
+        return new self(function ($success, $failure) use ($onSuccess, $onFailure) {
+
+            if ($this->isFulfilled()) {
+                $success($this->try($onSuccess, $this->result));
+            } elseif ($this->isRejected() && $onFailure) {
+                $failure($this->try($onFailure, $this->result));
             }
         });
-        return $promise;
     }
 
-
-    public function catch(callable $onRejected)
+    /** mark the promise as fulfilled */
+    private function fulfill($value = null)
     {
-        return $this->then(null, $onRejected);
-    }
-
-
-    private function fulfill($value)
-    {
-        if ($this->state == self::PENDING) {
-            $this->state = self::FULFILLED;
+        if ($this->isPending()) {
+            $this->fulfilled();
             $this->result = $value;
-            $this->callCallbacks();
+        }
+    }
+
+    /** mark the promise as rejected */
+    private function reject($value = null)
+    {
+        if ($this->isPending()) {
+            $this->rejected();
+            $this->result = $value;
         }
     }
 
 
-    private function reject($reason)
+    /** catch errors occured inside the promise */
+    public function catch(callable $callback)
     {
-        if ($this->state == self::PENDING) {
-            $this->state = self::REJECTED;
-            $this->result = $reason;
-            $this->callCallbacks();
-        }
+        if (!$this->hasError()) return $this;
+
+        $exception_type = $this->getFirstParatemerType($callback);
+
+
+        if ($exception_type && !$this->error instanceof $exception_type) return $this;
+
+
+        $this->try($callback, $this->error);
+
+        return $this;
     }
 
 
-    private function callCallbacks()
+    /** try to execute callback and catch errors */
+    private function try(callable $callback, ...$params)
     {
-        foreach ($this->callbacks as $callback) {
-            $callback();
+        try {
+            return $this->call($callback, ...$params);
+        } catch (\Throwable $th) {
+            $this->error($th);
         }
-        $this->callbacks = [];
     }
 }
