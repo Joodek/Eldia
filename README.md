@@ -1,6 +1,6 @@
 # Eldia
 
-<img src="https://preview.redd.it/2yua2b3r7bb71.png?width=640&crop=smart&auto=webp&s=8d1181f9108f0c98b3ec1f9c2c5c8341cd4d56a8"/>
+<img style="width:100%;" src="https://preview.redd.it/2yua2b3r7bb71.png?width=640&crop=smart&auto=webp&s=8d1181f9108f0c98b3ec1f9c2c5c8341cd4d56a8"/>
 
 Eldia is a lightweight PHP package that provides developers with a set of extra helpers
 to simplify common programming tasks. The library is designed to be easy to use, with an
