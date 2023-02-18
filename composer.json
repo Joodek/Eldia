@@ -14,12 +14,13 @@
     "authors": [
         {
             "name": "yassinebenaid",
-            "email": "yassinebenaide3@gmail.com"
+            "email": "yassinebenaide3@gmail.com",
+            "homepage": "https://github.com/yassinebenaid"
         }
     ],
     "extra": {
         "branch-alias": {
-            "dev-main": "1.0.x-dev"
+            "dev-master": "1.x-dev"
         }
     }
 }
