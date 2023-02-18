@@ -31,3 +31,64 @@ have you used Javascript promises, if so , then you probably liked the functiona
             ->then(fn ($message) => print($message), fn ($reason) => print($reason))
 
             ->catch(fn ($exception) => print($exception->getMessage()));
+
+you can use how many `then` you like , everytime you use it , you have access to the latest returned data , see example
+    
+    
+    Promise::make(function ($success, $reject) {
+
+        $var = 5 + 5;
+  
+        if ($var === 10) $success($var);
+        else $failure($var);
+    })
+      ->then(fn ($data) => $data + 5)
+      ->then(fn ($data) =>  print  $data) // 15
+    
+that's available in both , `success` and `reject` callbacks, and you can even avoid using the `reject` at all : 
+
+    
+     Promise::make(function ($success) {
+
+            if (0) {
+                $success('hello world');
+            } else{
+                // do somthing
+            }
+        })
+
+            ->then(fn ($message) => print($message))
+
+
+during the promise callbacks , you're safe from all types of errors , even the syntax errors , which means
+that whatever happend in the callbacks, no error will occur , it will just stop executing the callbacks, 
+but , for some reason you want to execute some code when an error occurs , you can use `catch` , 
+    
+     Promise::make(function ($success) {
+
+            if (0) {
+                $success('hello world');
+            } else{
+                throw new Exception('error');
+            }
+        })
+
+            ->catch(fn ($exception) => print($exception->getMessage())) // prints "error"
+
+you can even catch specific error by just typing hint the exception type , 
+typed exception will only be exceuted  if it matches the type : 
+
+
+     Promise::make(function ($success) {
+
+        $str = "baz";
+
+        if ($str === "foo") {
+            $success('hello world');
+        } else {
+            throw new ValidationException('error');
+        }
+    })
+
+        ->catch(fn (AuthException $exception) => print($exception->getMessage())) // won't works
+        ->catch(fn (ValidationException $exception) => print($exception->getMessage())); // prints "error"
