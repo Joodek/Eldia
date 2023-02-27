@@ -43,7 +43,7 @@ you can use how many `then` you like , everytime you use it , you have access to
         $var = 5 + 5;
   
         if ($var === 10) $success($var);
-        else $failure($var);
+        else $reject($var);
     })
       ->then(fn ($data) => $data + 5)
       ->then(fn ($data) =>  print  $data) // 15
