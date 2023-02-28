@@ -5,6 +5,14 @@ namespace Eldia\Promise;
 use ReflectionFunction;
 use ReflectionMethod;
 
+
+/**
+ * @package Eldia
+ * @author yassine benaid <yassinebenaide3@gmail.com>
+ */
+
+
+
 trait PromiseCallbacks
 {
 

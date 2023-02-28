@@ -2,6 +2,11 @@
 
 namespace Eldia\Promise;
 
+/**
+ * @package Eldia
+ * @author yassine benaid <yassinebenaide3@gmail.com>
+ */
+
 class Promise
 {
     use PromiseState,

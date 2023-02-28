@@ -4,6 +4,13 @@ namespace Eldia\Promise;
 
 use Throwable;
 
+
+/**
+ * @package Eldia
+ * @author yassine benaid <yassinebenaide3@gmail.com>
+ */
+
+
 trait PromiseErrors
 {
     protected ?Throwable $error = null;

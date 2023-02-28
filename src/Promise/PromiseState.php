@@ -2,6 +2,13 @@
 
 namespace Eldia\Promise;
 
+
+/**
+ * @package Eldia
+ * @author yassine benaid <yassinebenaide3@gmail.com>
+ */
+
+
 trait PromiseState
 {
     protected readonly string $PENDING;
