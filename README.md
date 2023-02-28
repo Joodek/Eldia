@@ -12,7 +12,7 @@ into your code, and they can help you to write cleaner, more efficient PHP code.
 
 ## installation 
 ```
-    composer require yassinebenaid/eldia
+    composer require joodek/eldia
 ```
 
 ## Features
@@ -22,6 +22,9 @@ into your code, and they can help you to write cleaner, more efficient PHP code.
 have you used Javascript promises, if so , then you probably liked the functionality they give , 
     and how great they are . now you can use them in php like this :
     
+    
+     use Eldia\Promise\Promise;
+     
      Promise::make(function ($success, $reject) {
 
             if (0) {
@@ -34,6 +37,7 @@ have you used Javascript promises, if so , then you probably liked the functiona
             ->then(fn ($message) => print($message), fn ($reason) => print($reason))
 
             ->catch(fn ($exception) => print($exception->getMessage()));
+            
 
 you can use how many `then` you like , everytime you use it , you have access to the latest returned data , see example
     
