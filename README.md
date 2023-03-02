@@ -19,8 +19,7 @@ into your code, and they can help you to write cleaner, more efficient PHP code.
 
 #### Promises
 
-have you used Javascript promises, if so , then you probably liked the functionality they give , 
-    and how great they are . now you can use them in php like this :
+have you used Javascript promises, if so then you probably like them , I like them , now you can use them in php like this :
     
     
      use Eldia\Promise\Promise;
