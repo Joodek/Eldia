@@ -66,7 +66,7 @@ that's available in both , `success` and `reject` callbacks, and you can even av
             ->then(fn ($message) => print($message))
 
 
-during the promise callbacks , you're safe from all types of errors , even the syntax errors , which means
+during the promise callbacks , you're safe from all types of errors , excep the syntax errors , which means
 that whatever happend in the callbacks, no error will occur , it will just stop executing the callbacks, 
 but , for some reason you want to execute some code when an error occurs , you can use `catch` , 
     
